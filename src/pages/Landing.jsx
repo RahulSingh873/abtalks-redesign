@@ -5,8 +5,8 @@ import DayRail from "../components/DayRail";
 import { ArrowRightIcon, FlameIcon, GithubIcon, LinkedinIcon, CheckIcon, SparkIcon } from "../components/Icons";
 
 const stats = [
-  { value: "50", label: "Days" },
-  { value: "40", label: "Daily builds" },
+  { value: "60", label: "Days" },
+  { value: "60", label: "Daily builds" },
   { value: "2", label: "Proofs / day" },
 ];
 
