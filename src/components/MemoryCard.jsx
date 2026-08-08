@@ -1,16 +1,12 @@
 import { useEffect, useState } from "react";
-import { breethEnabled, searchMemory, groupIdFor } from "../lib/breeth";
+import { searchMemory, groupIdFor } from "../lib/breeth";
 import { SparkIcon } from "./Icons";
 
 export default function MemoryCard({ student }) {
-  const [state, setState] = useState("idle");
+  const [state, setState] = useState("loading");
   const [facts, setFacts] = useState([]);
 
   useEffect(() => {
-    if (!breethEnabled) {
-      setState("disabled");
-      return;
-    }
     let cancelled = false;
     setState("loading");
     searchMemory(`What has ${student.name} recently completed in the ABTalks challenge?`, {
@@ -18,8 +14,12 @@ export default function MemoryCard({ student }) {
       limit: 5,
     }).then((res) => {
       if (cancelled) return;
-      if (!res?.ok && res?.edges === undefined) {
-        setState(res?.disabled ? "disabled" : "error");
+      if (res.disabled) {
+        setState("disabled");
+        return;
+      }
+      if (!res.ok) {
+        setState("error");
         return;
       }
       const edges = res.edges || [];
@@ -38,9 +38,8 @@ export default function MemoryCard({ student }) {
           <SparkIcon className="text-xs" /> Memory (Breeth)
         </p>
         <p className="mt-1.5 leading-relaxed">
-          Add <code className="rounded bg-surface-3 px-1 py-0.5">VITE_BREETH_API_KEY</code> to
-          a local <code className="rounded bg-surface-3 px-1 py-0.5">.env</code> file to let
-          this dashboard remember completed days across sessions.
+          Set <code className="rounded bg-surface-3 px-1 py-0.5">BREETH_API_KEY</code> in your
+          deploy environment to let this dashboard remember completed days across sessions.
         </p>
       </div>
     );

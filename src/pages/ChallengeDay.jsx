@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { getDay, TOTAL_DAYS } from "../data/mockData";
 import { useDemoState } from "../lib/DemoStateContext";
+import { writeEpisode, groupIdFor } from "../lib/breeth";
 import Button from "../components/Button";
 import Badge from "../components/Badge";
 import Card from "../components/Card";
@@ -21,7 +22,7 @@ import {
 const GITHUB_RE = /^https?:\/\/(www\.)?github\.com\/[\w.-]+\/[\w.-]+(\/.*)?$/i;
 const LINKEDIN_RE = /^https?:\/\/(www\.)?linkedin\.com\/.+/i;
 
-function ProofField({ icon: Icon, label, placeholder, value, onChange, onSubmit, verified, error, actionLabel, tone }) {
+function ProofField({ icon: Icon, label, placeholder, value, onChange, onSubmit, verified, checking, error, actionLabel, tone }) {
   const toneClasses = tone === "mint" ? "text-mint" : "text-indigo";
   return (
     <div className={`rounded-2xl border p-4 transition-colors ${verified ? "border-mint/40 bg-mint-dim" : "border-border bg-surface"}`}>
@@ -56,8 +57,8 @@ function ProofField({ icon: Icon, label, placeholder, value, onChange, onSubmit,
             className="focus-ring w-full rounded-xl border border-border bg-surface-2 px-3.5 py-3 text-sm text-text placeholder:text-muted-2"
           />
           {error && <p className="text-xs font-medium text-ember-light">{error}</p>}
-          <Button type="submit" variant="secondary" size="sm" className="self-start">
-            {actionLabel}
+          <Button type="submit" variant="secondary" size="sm" className="self-start" disabled={checking}>
+            {checking ? "Checking…" : actionLabel}
           </Button>
         </form>
       ) : (
@@ -77,19 +78,39 @@ export default function ChallengeDay() {
   const [linkedinUrl, setLinkedinUrl] = useState("");
   const [githubVerified, setGithubVerified] = useState(false);
   const [linkedinVerified, setLinkedinVerified] = useState(false);
+  const [githubChecking, setGithubChecking] = useState(false);
   const [githubError, setGithubError] = useState("");
   const [linkedinError, setLinkedinError] = useState("");
   const [checkedDod, setCheckedDod] = useState({});
+  const [memoryWritten, setMemoryWritten] = useState(false);
 
   const bothDone = githubVerified && linkedinVerified;
 
-  function submitGithub() {
-    if (!GITHUB_RE.test(githubUrl.trim())) {
+  async function submitGithub() {
+    const trimmed = githubUrl.trim();
+    if (!GITHUB_RE.test(trimmed)) {
       setGithubError("That doesn't look like a GitHub repo or commit URL.");
       return;
     }
     setGithubError("");
-    setGithubVerified(true);
+    setGithubChecking(true);
+    try {
+      const [, , , owner, repo] = trimmed.match(
+        /^https?:\/\/(www\.)?github\.com\/([\w.-]+)\/([\w.-]+)/i
+      ) || [];
+      const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
+      if (res.ok) {
+        setGithubVerified(true);
+      } else if (res.status === 404) {
+        setGithubError("Couldn't find that repository on GitHub — check the URL.");
+      } else {
+        setGithubVerified(true);
+      }
+    } catch {
+      setGithubVerified(true);
+    } finally {
+      setGithubChecking(false);
+    }
   }
 
   function submitLinkedin() {
@@ -101,11 +122,22 @@ export default function ChallengeDay() {
     setLinkedinVerified(true);
   }
 
+  useEffect(() => {
+    if (!bothDone || memoryWritten) return;
+    setMemoryWritten(true);
+    writeEpisode(
+      `${student.name} completed Day ${day.day} ("${day.title}") in the ${day.track} track. ` +
+        `GitHub proof: ${githubUrl}. LinkedIn proof: ${linkedinUrl}. ` +
+        `Streak is now ${student.currentStreak + 1} days.`,
+      { groupId: groupIdFor(student), extractIntent: true }
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bothDone, memoryWritten]);
+
   return (
     <div className="min-h-screen bg-ink pb-28">
       <ScenarioSwitcher />
 
-      {/* Header */}
       <header className="sticky top-0 z-30 border-b border-border bg-ink/95 backdrop-blur">
         <div className="mx-auto flex max-w-[480px] items-center gap-3 px-4 py-3.5">
           <Link
@@ -129,7 +161,6 @@ export default function ChallengeDay() {
       <main className="mx-auto max-w-[480px] px-5">
         {!bothDone ? (
           <>
-            {/* Task header */}
             <div className="mt-5 animate-rise">
               <div className="flex items-center gap-2">
                 <Badge tone="ember">{day.difficulty}</Badge>
@@ -143,13 +174,11 @@ export default function ChallengeDay() {
               <p className="mt-2 text-[15px] leading-relaxed text-muted">{day.description}</p>
             </div>
 
-            {/* Expected outcome */}
             <Card className="mt-4 animate-rise" style={{ animationDelay: "40ms" }}>
               <p className="font-mono text-xs font-semibold uppercase tracking-widest text-mint">Expected outcome</p>
               <p className="mt-2 text-sm leading-relaxed text-text">{day.expectedOutcome}</p>
             </Card>
 
-            {/* Requirements */}
             <div className="mt-4 animate-rise" style={{ animationDelay: "80ms" }}>
               <p className="font-mono text-xs font-semibold uppercase tracking-widest text-muted-2">Requirements</p>
               <ul className="mt-2.5 space-y-2">
@@ -162,7 +191,6 @@ export default function ChallengeDay() {
               </ul>
             </div>
 
-            {/* Definition of Done */}
             <Card className="mt-4 animate-rise" style={{ animationDelay: "120ms" }}>
               <p className="font-mono text-xs font-semibold uppercase tracking-widest text-muted-2">Definition of done</p>
               <ul className="mt-3 space-y-2.5">
@@ -196,7 +224,6 @@ export default function ChallengeDay() {
               </ul>
             </Card>
 
-            {/* Guidance */}
             <div className="mt-4 rounded-2xl border border-indigo/25 bg-indigo-dim p-4 animate-rise" style={{ animationDelay: "160ms" }}>
               <p className="flex items-center gap-1.5 font-mono text-xs font-semibold uppercase tracking-widest text-indigo">
                 <SparkIcon className="text-xs" /> Getting started
@@ -210,7 +237,6 @@ export default function ChallengeDay() {
               </ul>
             </div>
 
-            {/* Proof submission */}
             <div className="mt-6 animate-rise" style={{ animationDelay: "200ms" }}>
               <p className="font-mono text-xs font-semibold uppercase tracking-widest text-muted-2">Submit your proof</p>
               <div className="mt-3 space-y-3">
@@ -222,6 +248,7 @@ export default function ChallengeDay() {
                   onChange={setGithubUrl}
                   onSubmit={submitGithub}
                   verified={githubVerified}
+                  checking={githubChecking}
                   error={githubError}
                   actionLabel="Verify GitHub"
                   tone="mint"
@@ -242,7 +269,6 @@ export default function ChallengeDay() {
             </div>
           </>
         ) : (
-          // Completion state
           <div className="mt-10 flex flex-col items-center text-center animate-rise">
             <div className="flex h-20 w-20 items-center justify-center rounded-full bg-mint-dim text-4xl">
               🎉
