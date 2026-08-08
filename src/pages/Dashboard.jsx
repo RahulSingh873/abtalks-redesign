@@ -7,6 +7,7 @@ import Card from "../components/Card";
 import ProgressBar from "../components/ProgressBar";
 import DayRail from "../components/DayRail";
 import MomentumCard from "../components/MomentumCard";
+import MemoryCard from "../components/MemoryCard";
 import BottomNav from "../components/BottomNav";
 import ScenarioSwitcher from "../components/ScenarioSwitcher";
 import {
@@ -37,7 +38,6 @@ export default function Dashboard() {
     <div className="min-h-screen bg-ink pb-24">
       <ScenarioSwitcher />
 
-      {/* Header */}
       <header className="mx-auto flex max-w-[480px] items-center justify-between px-5 pt-6">
         <div>
           <p className="text-sm text-muted">
@@ -58,7 +58,6 @@ export default function Dashboard() {
       </header>
 
       <main className="mx-auto max-w-[480px] px-5">
-        {/* Empty profile prompt */}
         {!student.profileComplete && (
           <div className="mt-4 flex items-start gap-3 rounded-xl border border-indigo/30 bg-indigo-dim px-4 py-3 animate-rise">
             <UserIcon className="mt-0.5 shrink-0 text-indigo" />
@@ -72,7 +71,6 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Missed day recovery */}
         {student.missedYesterday && (
           <div className="mt-4 flex items-start gap-3 rounded-xl border border-ember/30 bg-ember-dim px-4 py-3 animate-rise">
             <AlertIcon className="mt-0.5 shrink-0 text-ember-light" />
@@ -85,7 +83,6 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Streak strip */}
         <div className="mt-4 flex items-center gap-3 animate-rise">
           <div className="flex items-center gap-1.5 rounded-full bg-surface-2 border border-border px-3 py-1.5">
             <FlameIcon className={`text-base ${student.currentStreak > 0 ? "text-ember" : "text-muted-2"}`} />
@@ -97,7 +94,6 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* TODAY'S TASK — most prominent element */}
         <Link
           to={`/day/${student.currentDay}`}
           className="focus-ring mt-5 block animate-rise"
@@ -127,12 +123,14 @@ export default function Dashboard() {
           </div>
         </Link>
 
-        {/* Momentum */}
         <div className="mt-5 animate-rise" style={{ animationDelay: "100ms" }}>
           <MomentumCard student={student} />
         </div>
 
-        {/* Challenge progress */}
+        <div className="mt-5 animate-rise" style={{ animationDelay: "120ms" }}>
+          <MemoryCard student={student} />
+        </div>
+
         <Card className="mt-5 animate-rise" style={{ animationDelay: "140ms" }}>
           <div className="flex items-center justify-between">
             <p className="font-mono text-xs font-semibold uppercase tracking-widest text-muted-2">
@@ -164,7 +162,6 @@ export default function Dashboard() {
           </div>
         </Card>
 
-        {/* Achievements / standing */}
         <div className="mt-5 animate-rise" style={{ animationDelay: "180ms" }}>
           <div className="flex items-center justify-between">
             <p className="font-mono text-xs font-semibold uppercase tracking-widest text-muted-2">Achievements</p>
@@ -196,7 +193,6 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* What happens next */}
         <div className="mt-5 mb-4 rounded-2xl border border-border bg-surface-2 p-4 animate-rise" style={{ animationDelay: "220ms" }}>
           <p className="text-sm text-muted">
             <span className="font-semibold text-text">What happens next: </span>
