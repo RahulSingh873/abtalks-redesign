@@ -3,6 +3,7 @@ import { DemoStateProvider } from "./lib/DemoStateContext";
 import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import ChallengeDay from "./pages/ChallengeDay";
+import Profile from "./pages/Profile";
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/day/:dayNumber" element={<ChallengeDay />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </BrowserRouter>
     </DemoStateProvider>

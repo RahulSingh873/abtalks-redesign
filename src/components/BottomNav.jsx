@@ -6,7 +6,7 @@ export default function BottomNav() {
   const items = [
     { to: "/dashboard", label: "Home", icon: HomeIcon },
     { to: `/day/${student.currentDay}`, label: "Today", icon: GridIcon, match: "/day" },
-    { to: "/dashboard#profile", label: "Profile", icon: UserIcon },
+    { to: "/profile", label: "Profile", icon: UserIcon },
   ];
 
   return (

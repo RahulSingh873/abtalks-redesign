@@ -47,12 +47,13 @@ export default function Dashboard() {
             Day {student.currentDay} <span className="text-muted-2 font-medium">of {TOTAL_DAYS}</span>
           </h1>
         </div>
-        <Link
-          to={`/day/${student.currentDay}`}
+<Link
+          to="/profile"
           className="focus-ring flex h-11 w-11 items-center justify-center rounded-full bg-surface-2 border border-border text-ember-light font-mono text-sm font-bold"
-          aria-label="Go to profile"
-          id="profile"
+          aria-label="View profile"
         >
+        
+
           {student.name.split(" ").map((n) => n[0]).join("")}
         </Link>
       </header>
