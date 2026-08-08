@@ -58,7 +58,7 @@ export default function Dashboard() {
         </Link>
       </header>
 
-      <main className="mx-auto max-w-[480px] px-5">
+      <main id="main-content" className="mx-auto max-w-[480px] px-5">
         {!student.profileComplete && (
           <div className="mt-4 flex items-start gap-3 rounded-xl border border-indigo/30 bg-indigo-dim px-4 py-3 animate-rise">
             <UserIcon className="mt-0.5 shrink-0 text-indigo" />

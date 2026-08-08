@@ -37,7 +37,17 @@ const trust = [
   { icon: LinkedinIcon, label: "LinkedIn visibility" },
 ];
 
+function nextMondayLabel() {
+  const now = new Date();
+  const day = now.getDay();
+  const daysUntilMonday = ((1 - day) + 7) % 7 || 7;
+  const next = new Date(now);
+  next.setDate(now.getDate() + daysUntilMonday);
+  return next.toLocaleDateString("en-IN", { weekday: "long", month: "short", day: "numeric" });
+}
+
 export default function Landing() {
+  const cohortDate = nextMondayLabel();
   return (
     <div className="min-h-screen bg-ink">
       {/* Top bar */}
@@ -54,10 +64,10 @@ export default function Landing() {
       </header>
 
       {/* Hero */}
-      <section className="mx-auto max-w-[480px] px-5 pt-6 pb-10">
+      <section id="main-content" className="mx-auto max-w-[480px] px-5 pt-6 pb-10">
         <div className="animate-rise">
           <Badge tone="ember">
-            <FlameIcon /> Cohort opens this week
+            <FlameIcon /> Cohort opens {cohortDate}
           </Badge>
           <h1 className="mt-4 font-[var(--font-display)] text-[2.6rem] font-extrabold leading-[1.05] tracking-tight text-text">
             60 days.
@@ -79,6 +89,9 @@ export default function Landing() {
           <Button as="a" href="#how-it-works" variant="outline" size="lg" className="w-full">
             See how it works
           </Button>
+          <p className="text-center text-xs font-medium text-muted-2">
+            Free to join · No credit card required
+          </p>
         </div>
 
         {/* Stat strip */}
@@ -96,7 +109,7 @@ export default function Landing() {
           {trust.map(({ icon: Icon, label }) => (
             <span
               key={label}
-              className="flex items-center gap-1.5 rounded-full border border-border bg-surface-2 px-3 py-1.5 text-xs font-medium text-muted"
+              className="flex items-center gap-1.5 rounded-full border border-border bg-surface-2 px-3 py-1.5 text-xs font-medium text-text"
             >
               <Icon className="text-sm text-ember-light" /> {label}
             </span>

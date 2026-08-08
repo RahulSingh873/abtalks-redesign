@@ -158,7 +158,7 @@ export default function ChallengeDay() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-[480px] px-5">
+      <main id="main-content" className="mx-auto max-w-[480px] px-5">
         {!bothDone ? (
           <>
             <div className="mt-5 animate-rise">

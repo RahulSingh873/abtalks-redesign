@@ -57,7 +57,7 @@ export default function Profile() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-[480px] px-5">
+      <main id="main-content" className="mx-auto max-w-[480px] px-5">
         <div className="mt-5 flex items-center gap-4 animate-rise">
           <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-surface-3 font-mono text-lg font-bold text-ember-light">
             {student.name.split(" ").map((n) => n[0]).join("")}
