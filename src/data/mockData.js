@@ -17,7 +17,7 @@ export const student = {
   momentumScore: 82,
   nextMilestone: { label: "15-day streak", daysAway: 4 },
   github: "rahulsingh873",
-  linkedin: "rahul-singh-dev",
+  linkedin: "rahul-singh-754714332",
   profileComplete: true, // toggle to false to preview the empty-profile prompt
   missedYesterday: false, // toggle to true to preview the missed-day recovery state
 };
