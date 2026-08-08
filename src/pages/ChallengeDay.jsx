@@ -3,6 +3,8 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { getDay, TOTAL_DAYS } from "../data/mockData";
 import { useDemoState } from "../lib/DemoStateContext";
 import { writeEpisode, groupIdFor } from "../lib/breeth";
+import { saveReflection, getMostRecentReflection } from "../lib/reflections";
+import { currentTier, buildShareCaption } from "../lib/tiers";
 import Button from "../components/Button";
 import Badge from "../components/Badge";
 import Card from "../components/Card";
@@ -83,6 +85,10 @@ export default function ChallengeDay() {
   const [linkedinError, setLinkedinError] = useState("");
   const [checkedDod, setCheckedDod] = useState({});
   const [memoryWritten, setMemoryWritten] = useState(false);
+  const [reflection, setReflection] = useState("");
+  const [reflectionSaved, setReflectionSaved] = useState(false);
+  const [captionCopied, setCaptionCopied] = useState(false);
+  const pastReflection = getMostRecentReflection(day.day);
 
   const bothDone = githubVerified && linkedinVerified;
 
@@ -172,6 +178,25 @@ export default function ChallengeDay() {
                 {day.title}
               </h1>
               <p className="mt-2 text-[15px] leading-relaxed text-muted">{day.description}</p>
+              {day.whyItMatters && (
+                <div className="mt-3 flex items-start gap-2 rounded-xl border border-ember/20 bg-ember-dim/40 px-3.5 py-2.5">
+                  <SparkIcon className="mt-0.5 shrink-0 text-sm text-ember-light" />
+                  <p className="text-[13px] leading-relaxed text-muted">
+                    <span className="font-semibold text-ember-light">Why today matters: </span>
+                    {day.whyItMatters}
+                  </p>
+                </div>
+              )}
+              {pastReflection && (
+                <div className="mt-3 rounded-xl border border-indigo/20 bg-indigo-dim/40 px-3.5 py-2.5">
+                  <p className="text-[11px] font-semibold uppercase tracking-wide text-indigo">
+                    You, on Day {pastReflection.day}
+                  </p>
+                  <p className="mt-1 text-[13px] italic leading-relaxed text-muted">
+                    "{pastReflection.text}"
+                  </p>
+                </div>
+              )}
             </div>
 
             <Card className="mt-4 animate-rise" style={{ animationDelay: "40ms" }}>
@@ -297,6 +322,79 @@ export default function ChallengeDay() {
                 Streak now at <span className="font-semibold text-text">{student.currentStreak + 1} days</span>.
                 Keep it up — {student.nextMilestone.label} is close.
               </p>
+            </Card>
+
+            {(() => {
+              const tierBefore = currentTier(student.currentStreak);
+              const tierAfter = currentTier(student.currentStreak + 1);
+              if (!tierAfter || tierAfter === tierBefore) return null;
+              const caption = buildShareCaption({ student, tier: tierAfter, day: day.day });
+              return (
+                <Card className="mt-4 w-full text-left border-ember/30" style={{ background: tierAfter.dim }}>
+                  <p className="font-mono text-xs font-semibold uppercase tracking-widest" style={{ color: tierAfter.color }}>
+                    New Proof Tier unlocked
+                  </p>
+                  <p className="mt-1 text-base font-bold text-text">{tierAfter.credibilityLabel}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-muted">
+                    This one's built to post, not just collect. Copy the caption below straight
+                    into LinkedIn.
+                  </p>
+                  <div className="mt-3 whitespace-pre-wrap rounded-xl border border-border bg-surface-2 px-3.5 py-3 font-mono text-xs leading-relaxed text-muted">
+                    {caption}
+                  </div>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    className="mt-3"
+                    onClick={() => {
+                      navigator.clipboard?.writeText(caption).then(() => {
+                        setCaptionCopied(true);
+                        setTimeout(() => setCaptionCopied(false), 2000);
+                      });
+                    }}
+                  >
+                    {captionCopied ? "Copied!" : "Copy caption for LinkedIn"}
+                  </Button>
+                </Card>
+              );
+            })()}
+
+            <Card className="mt-4 w-full text-left">
+              <p className="font-mono text-xs font-semibold uppercase tracking-widest text-indigo">
+                Quick reflection
+              </p>
+              {reflectionSaved ? (
+                <p className="mt-2 text-sm leading-relaxed text-muted">
+                  Saved — future-you on a later day will see this. Small note, real signal.
+                </p>
+              ) : (
+                <>
+                  <p className="mt-1 text-sm leading-relaxed text-muted">
+                    What was the hardest part of today's build? (optional — a future day will show
+                    this back to you)
+                  </p>
+                  <textarea
+                    value={reflection}
+                    onChange={(e) => setReflection(e.target.value)}
+                    rows={2}
+                    maxLength={220}
+                    placeholder="e.g. Getting the layout to hold up on small screens"
+                    className="focus-ring mt-2.5 w-full resize-none rounded-xl border border-border bg-surface-2 px-3.5 py-2.5 text-sm text-text placeholder:text-muted-2"
+                  />
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    className="mt-2"
+                    disabled={!reflection.trim()}
+                    onClick={() => {
+                      saveReflection(day.day, reflection);
+                      setReflectionSaved(true);
+                    }}
+                  >
+                    Save reflection
+                  </Button>
+                </>
+              )}
             </Card>
 
             <Button

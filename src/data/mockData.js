@@ -42,6 +42,8 @@ export const days = {
   12: {
     day: 12,
     title: "Build an Interactive Portfolio",
+    whyItMatters:
+      "Recruiters decide whether to keep reading in the first few seconds on your portfolio — it's usually the very first thing they check before an interview call.",
     description:
       "Design and ship a personal portfolio site that actually looks like you built it on purpose. This is the page recruiters land on first — make the first three seconds count.",
     expectedOutcome:
@@ -75,6 +77,7 @@ export function getDay(dayNumber) {
     days[dayNumber] || {
       day: dayNumber,
       title: `Day ${dayNumber} challenge`,
+      whyItMatters: "Every day you ship compounds into a track record recruiters can verify.",
       description: "This day's brief hasn't been mocked in this prototype yet.",
       expectedOutcome: "—",
       difficulty: "—",

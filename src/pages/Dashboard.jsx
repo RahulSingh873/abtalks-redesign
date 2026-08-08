@@ -8,6 +8,7 @@ import ProgressBar from "../components/ProgressBar";
 import DayRail from "../components/DayRail";
 import MomentumCard from "../components/MomentumCard";
 import MemoryCard from "../components/MemoryCard";
+import ProofTierBadge from "../components/ProofTierBadge";
 import BottomNav from "../components/BottomNav";
 import ScenarioSwitcher from "../components/ScenarioSwitcher";
 import {
@@ -29,6 +30,11 @@ function greeting() {
   return "Good evening";
 }
 
+function isLateNight() {
+  const h = new Date().getHours();
+  return h >= 21 || h < 3;
+}
+
 export default function Dashboard() {
   const { student } = useDemoState();
   const today = getDay(student.currentDay);
@@ -47,13 +53,11 @@ export default function Dashboard() {
             Day {student.currentDay} <span className="text-muted-2 font-medium">of {TOTAL_DAYS}</span>
           </h1>
         </div>
-<Link
+        <Link
           to="/profile"
           className="focus-ring flex h-11 w-11 items-center justify-center rounded-full bg-surface-2 border border-border text-ember-light font-mono text-sm font-bold"
           aria-label="View profile"
         >
-        
-
           {student.name.split(" ").map((n) => n[0]).join("")}
         </Link>
       </header>
@@ -79,6 +83,19 @@ export default function Dashboard() {
               <p className="text-sm font-semibold text-text">You missed yesterday. That's okay.</p>
               <p className="mt-0.5 text-xs text-muted">
                 Your streak has reset, but your {student.completedDays} completed days aren't going anywhere.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {!student.missedYesterday && isLateNight() && (
+          <div className="mt-4 flex items-start gap-3 rounded-xl border border-border bg-surface-2 px-4 py-3 animate-rise">
+            <ClockIcon className="mt-0.5 shrink-0 text-ember-light" />
+            <div className="flex-1">
+              <p className="text-sm font-semibold text-text">Still time tonight</p>
+              <p className="mt-0.5 text-xs text-muted">
+                Day {student.currentDay} takes about {today.estimatedTime}. Ship it before you sleep and
+                the streak holds.
               </p>
             </div>
           </div>
@@ -126,6 +143,10 @@ export default function Dashboard() {
 
         <div className="mt-5 animate-rise" style={{ animationDelay: "100ms" }}>
           <MomentumCard student={student} />
+        </div>
+
+        <div className="mt-5 animate-rise" style={{ animationDelay: "110ms" }}>
+          <ProofTierBadge student={student} />
         </div>
 
         <div className="mt-5 animate-rise" style={{ animationDelay: "120ms" }}>
