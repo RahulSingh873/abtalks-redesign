@@ -30,17 +30,17 @@ mobile-first (390px) prototype using React + Vite + Tailwind.
 
 \*\*What Claude did:\*\* Scaffolded the Vite/React/Tailwind v4 project, designed a
 
-custom dark design system (ink/surface/ember palette, Sora/Inter/JetBrains Mono
+custom dark design system (deliberately avoiding glassmorphism and generic
 
-type pairing — deliberately avoiding glassmorphism and generic gradients per the
+gradients per the brief), and built all three required routes (`/`,
 
-brief), and built all three required routes (`/`, `/dashboard`, `/day/12`) with
+`/dashboard`, `/day/12`) with the Momentum Score as the signature feature,
 
-the Momentum Score as the signature feature, full mock data, and all three
+full mock data, and all three required edge cases (first day, missed day,
 
-required edge cases (first day, missed day, empty profile) wired to an
+empty profile) wired to an interactive "preview a state" switcher rather than
 
-interactive "preview a state" switcher rather than just described in comments.
+just described in comments.
 
 
 
@@ -66,11 +66,15 @@ interactive "preview a state" switcher rather than just described in comments.
 
 \*\*What Claude did:\*\* Walked through `git init`/`add`/`commit`/`push`, resolved
 
-a diverged-history push rejection with `git pull --allow-unrelated-histories`,
+diverged-history push rejections with `git pull --allow-unrelated-histories`
 
-and helped debug several file-corruption issues caused by Notepad's autocorrect
+(recurred multiple times across the build), and helped debug several
 
-mangling JSX syntax — eventually recommending a move to VS Code.
+file-corruption issues caused by Notepad's autocorrect mangling JSX syntax —
+
+eventually recommending a move to VS Code, which resolved the issue for the
+
+rest of the build.
 
 
 
@@ -90,11 +94,11 @@ ways to stand out my project in front of 8000 participants"
 
 \*\*What Claude did:\*\* Gave a ranked set of differentiation ideas (specific mock
 
-data over generic placeholders, a second thoughtful feature beyond the required
+data over generic placeholders, a second thoughtful feature beyond the
 
-one, real API calls instead of pure mocks, a demo video). This informed several
+required one, real API calls instead of pure mocks, a demo video). This
 
-features built in later phases.
+informed several features built in later phases.
 
 
 
@@ -124,9 +128,9 @@ dashboard. When direct browser calls hit a CORS wall (confirmed via a live
 
 console error screenshot), Claude diagnosed the cause and rebuilt the
 
-integration behind a Netlify Function proxy (`netlify/functions/breeth-proxy.js`)
+integration behind a Netlify Function proxy so the API key stays server-side
 
-so the API key stays server-side and browser calls go same-origin.
+and browser calls go same-origin.
 
 
 
@@ -146,11 +150,11 @@ happens" → "ok i'll go with option b"
 
 \*\*What Claude did:\*\* Diagnosed that the Profile bottom-nav tab pointed to the
 
-same route as Home with a dead `#profile` anchor. Built a genuine fourth route,
+same route as Home with a dead `#profile` anchor. Built a genuine fourth
 
-`/profile` (a bonus beyond the 3 required routes), with real account details,
+route, `/profile` (a bonus beyond the 3 required routes), with real account
 
-progress snapshot, and standing summary.
+details, progress snapshot, and standing summary.
 
 
 
@@ -228,9 +232,9 @@ engagement of students and make them feel motivated" → "ok start"
 
 \*\*Prompt:\*\* "can you make a Collect Prompt section inside it where users can
 
-store their prompts like they copy there" → clarified via a quick multiple-choice
+store their prompts like they copy there" → clarified via a quick
 
-question that this meant AI prompts used while building
+multiple-choice question that this meant AI prompts used while building
 
 
 
@@ -262,17 +266,125 @@ UI and described wanting a progress-gated, claimable certificate section →
 
 \*\*What Claude did:\*\* Built a `CertificateCard` on the Profile page: a locked/
 
-grey state with a padlocked medallion icon while incomplete, an ember glow and
+grey state with a padlocked medallion icon while incomplete, a glowing gold
 
-gold medallion once all 60 days are done, and an ornamental certificate
+medallion once all 60 days are done, and an ornamental certificate preview
 
-preview (double border, corner flourishes) with its own shareable caption once
+(double border, corner flourishes) with its own shareable caption once
 
 claimed. Added a 5th demo scenario ("Day 60 · certificate ready") to the
 
 existing preview switcher so the unlocked state is actually reachable without
 
 waiting 60 real days.
+
+
+
+\---
+
+
+
+\## Phase 10 — Theme reskin
+
+
+
+\*\*Prompt:\*\* "before that i want to change the theme of the project like in
+
+place of orange i want green color (like hacker rank have) and background
+
+theme to black"
+
+
+
+\*\*What Claude did:\*\* Since nearly every component referenced a shared set of
+
+CSS custom properties rather than hardcoded colors, reskinned the entire app
+
+by editing the token values in `src/index.css` (ink background → near-black,
+
+ember accent → HackerRank-style green), then hunted down and fixed the
+
+handful of hardcoded hex values that didn't route through those tokens
+
+(button shadows, the Momentum ring, the certificate medallion gradient, the
+
+Today's Task card glow) so the whole product is visually consistent.
+
+
+
+\---
+
+
+
+\## Phase 11 — Submission materials
+
+
+
+\*\*Prompts:\*\*
+
+\- Asked what a `PROMPTS.md` / prompt transcript requirement means and why it
+
+&#x20; matters for verification
+
+\- Shared a Gamma slide deck link and asked for a shot list mapping real app
+
+&#x20; screens to each slide
+
+\- "can you create a ppt for me"
+
+
+
+\*\*What Claude did:\*\* Explained the difference between a curated build-log
+
+summary (useful but not independently verifiable) and a raw conversation
+
+export (harder to fake), recommended doing both, drafted two new slides
+
+(Proof Tier/Certificate, Prompt Vault/Breeth) matching the existing deck's
+
+voice, and began generating a fully custom-designed deck (paused mid-build
+
+when the theme reskin request came in, to keep the deck's palette in sync
+
+with the shipped product).
+
+
+
+\---
+
+
+
+\## Phase 12 — Deployment troubleshooting: Netlify credits exhausted
+
+
+
+\*\*Prompt:\*\* "hey i've checked my previously deployed link and there the
+
+changes are not made like it is the same as before"
+
+
+
+\*\*What Claude did:\*\* Walked through a structured diagnosis (check GitHub
+
+first, then the host) rather than guessing, which confirmed GitHub had the
+
+latest code but Netlify hadn't rebuilt. A screenshot of the Netlify dashboard
+
+revealed the real cause: the team's free-tier "operational credits" were
+
+exhausted, pausing all production deploys account-wide — unrelated to any
+
+git or code issue. Since a working Vercel deployment already existed, Claude
+
+rewrote the Breeth proxy as a Vercel serverless function (`api/breeth.js`,
+
+Vercel's format instead of Netlify's) so the memory integration would keep
+
+working on the new primary deployment target, with no changes needed to the
+
+frontend client code since both proxies are called at the same `/api/breeth`
+
+path.
 
 
 
@@ -288,13 +400,17 @@ Every feature above went through the same loop: Claude implemented and
 
 built/tested the change in its own sandbox first, then handed over exact file
 
-contents for manual paste into the person's local VS Code project (rather than
+contents for manual paste into the person's local VS Code project (rather
 
-assuming automated file sync), followed by `git add / commit / push` to deploy.
+than assuming automated file sync), followed by `git add / commit / push` to
 
-Several rounds involved debugging real runtime errors from live screenshots
+deploy. Several rounds involved debugging real runtime errors from live
 
-(a JSX syntax break from Notepad, a live CORS error in the browser console,
+screenshots — a JSX syntax break from Notepad, a live CORS error in the
 
-a `git push` rejection) rather than working from assumptions.
+browser console, repeated `git push` rejections from diverged history, and a
+
+platform-level deploy freeze from exhausted hosting credits — rather than
+
+working from assumptions.
 
