@@ -11,7 +11,7 @@ export default function Button({
 
   const variants = {
     primary:
-      "bg-ember text-ink hover:bg-ember-light shadow-[0_8px_24px_-8px_rgba(255,122,26,0.55)]",
+      "bg-ember text-ink hover:bg-ember-light shadow-[0_8px_24px_-8px_rgba(46,200,102,0.55)]",
     secondary:
       "bg-surface-3 text-text hover:bg-[#31364a] border border-border",
     ghost: "bg-transparent text-text hover:bg-surface-2",

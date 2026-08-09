@@ -10,14 +10,14 @@ function Medallion({ locked }) {
     <svg viewBox="0 0 64 64" className="h-full w-full">
       <defs>
         <linearGradient id="medallion-gold" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#FFD98A" />
-          <stop offset="55%" stopColor="#FF7A1A" />
-          <stop offset="100%" stopColor="#C4560A" />
+          <stop offset="0%" stopColor="#B6F5C8" />
+          <stop offset="55%" stopColor="#2EC866" />
+          <stop offset="100%" stopColor="#0E7A3C" />
         </linearGradient>
       </defs>
       <path
         d="M22 40 L14 60 L26 54 L32 62 L38 54 L50 60 L42 40 Z"
-        fill={locked ? "var(--color-surface-3)" : "#B8480A"}
+        fill={locked ? "var(--color-surface-3)" : "#0E7A3C"}
         opacity={locked ? 1 : 0.9}
       />
       <circle cx="32" cy="28" r="21" fill={locked ? "var(--color-surface-3)" : "url(#medallion-gold)"} />
@@ -26,7 +26,7 @@ function Medallion({ locked }) {
         cy="28"
         r="21"
         fill="none"
-        stroke={locked ? "var(--color-border)" : "#FFE7B3"}
+        stroke={locked ? "var(--color-border)" : "#D9FBE4"}
         strokeWidth="1.5"
         strokeDasharray="2.5 3.5"
       />
@@ -35,7 +35,7 @@ function Medallion({ locked }) {
         cy="28"
         r="14.5"
         fill="none"
-        stroke={locked ? "var(--color-muted-2)" : "#FFF3D6"}
+        stroke={locked ? "var(--color-muted-2)" : "#EFFFF4"}
         strokeWidth="1.2"
       />
       {locked ? (
@@ -51,7 +51,7 @@ function Medallion({ locked }) {
         <path
           d="M24 28.5l5 5 11-11"
           fill="none"
-          stroke="#3A1E00"
+          stroke="#062B14"
           strokeWidth="3"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -89,7 +89,7 @@ export default function CertificateCard({ student }) {
       {(eligible || claimed) && (
         <div
           className="pointer-events-none absolute -inset-8 opacity-40 blur-2xl"
-          style={{ background: "radial-gradient(closest-side, #FF9A3D, transparent)" }}
+          style={{ background: "radial-gradient(closest-side, #3FE58A, transparent)" }}
           aria-hidden="true"
         />
       )}
@@ -97,7 +97,7 @@ export default function CertificateCard({ student }) {
       <div
         className={`relative rounded-2xl border p-5 ${
           claimed
-            ? "border-ember/50 bg-gradient-to-br from-[#2A1608] via-surface to-surface"
+            ? "border-ember/50 bg-gradient-to-br from-[#0B2415] via-surface to-surface"
             : eligible
               ? "border-ember/40 bg-surface"
               : "border-border bg-surface"

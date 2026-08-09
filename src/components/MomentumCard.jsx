@@ -1,8 +1,8 @@
 import { SparkIcon } from "./Icons";
 
 function scoreTone(score) {
-  if (score >= 75) return { ring: "#FF7A1A", label: "Strong momentum", text: "text-ember-light" };
-  if (score >= 40) return { ring: "#FFA24D", label: "Building momentum", text: "text-ember-light" };
+  if (score >= 75) return { ring: "#2EC866", label: "Strong momentum", text: "text-ember-light" };
+  if (score >= 40) return { ring: "#5EE895", label: "Building momentum", text: "text-ember-light" };
   return { ring: "#6A6D80", label: "Just getting started", text: "text-muted" };
 }
 

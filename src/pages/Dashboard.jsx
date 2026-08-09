@@ -117,7 +117,7 @@ export default function Dashboard() {
           className="focus-ring mt-5 block animate-rise"
           style={{ animationDelay: "60ms" }}
         >
-          <div className="relative overflow-hidden rounded-2xl border border-ember/40 bg-gradient-to-br from-[#241407] via-surface to-surface p-5 shadow-[0_16px_40px_-16px_rgba(255,122,26,0.35)]">
+          <div className="relative overflow-hidden rounded-2xl border border-ember/40 bg-gradient-to-br from-[#0B2415] via-surface to-surface p-5 shadow-[0_16px_40px_-16px_rgba(46,200,102,0.35)]">
             <div className="flex items-center justify-between">
               <Badge tone="ember">Day {student.currentDay} · Today</Badge>
               <span className="flex items-center gap-1 text-xs font-medium text-muted-2">
