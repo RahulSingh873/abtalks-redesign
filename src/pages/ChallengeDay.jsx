@@ -5,6 +5,7 @@ import { useDemoState } from "../lib/DemoStateContext";
 import { writeEpisode, groupIdFor } from "../lib/breeth";
 import { saveReflection, getMostRecentReflection } from "../lib/reflections";
 import { currentTier, buildShareCaption } from "../lib/tiers";
+import PromptVault from "../components/PromptVault";
 import Button from "../components/Button";
 import Badge from "../components/Badge";
 import Card from "../components/Card";
@@ -262,9 +263,12 @@ export default function ChallengeDay() {
               </ul>
             </div>
 
+            <div className="mt-4 animate-rise" style={{ animationDelay: "180ms" }}>
+              <PromptVault day={day.day} />
+            </div>
+
             <div className="mt-6 animate-rise" style={{ animationDelay: "200ms" }}>
               <p className="font-mono text-xs font-semibold uppercase tracking-widest text-muted-2">Submit your proof</p>
-              <div className="mt-3 space-y-3">
                 <ProofField
                   icon={GithubIcon}
                   label="GitHub proof"
@@ -290,7 +294,6 @@ export default function ChallengeDay() {
                   actionLabel="Add LinkedIn post"
                   tone="indigo"
                 />
-              </div>
             </div>
           </>
         ) : (

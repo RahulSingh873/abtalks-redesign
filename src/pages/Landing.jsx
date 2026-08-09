@@ -195,7 +195,7 @@ export default function Landing() {
       </section>
 
       <footer className="border-t border-border py-6 text-center text-xs text-muted-2">
-        Built for the #60DayClaudeChallenge · ABTalks
+        Built with love by SpiderCoders · ABTalksonAI--Redesigned
       </footer>
     </div>
   );

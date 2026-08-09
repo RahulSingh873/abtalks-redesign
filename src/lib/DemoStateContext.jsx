@@ -29,6 +29,17 @@ export function DemoStateProvider({ children }) {
     student = { ...student, currentStreak: 0, missedYesterday: true };
   } else if (scenario === "empty-profile") {
     student = { ...student, profileComplete: false };
+  } else if (scenario === "challenge-complete") {
+    student = {
+      ...student,
+      currentDay: 60,
+      completedDays: 60,
+      currentStreak: 60,
+      overallCompletion: 100,
+      githubSubmissions: 60,
+      linkedinSubmissions: 58,
+      momentumScore: 98,
+    };
   }
 
   const value = { student, scenario, setScenario, completedProofs, setCompletedProofs };

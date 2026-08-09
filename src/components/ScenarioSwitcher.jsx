@@ -7,6 +7,7 @@ const options = [
   { id: "first-day", label: "Day 1 · fresh start" },
   { id: "missed-day", label: "Streak reset" },
   { id: "empty-profile", label: "Incomplete profile" },
+  { id: "challenge-complete", label: "Day 60 · certificate ready" },
 ];
 
 // A visible, honest "preview states" control — not hidden dev tooling —

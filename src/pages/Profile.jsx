@@ -7,6 +7,7 @@ import Badge from "../components/Badge";
 import Button from "../components/Button";
 import ProgressBar from "../components/ProgressBar";
 import DayRail from "../components/DayRail";
+import CertificateCard from "../components/CertificateCard";
 import BottomNav from "../components/BottomNav";
 import {
   ChevronLeftIcon,
@@ -135,6 +136,10 @@ export default function Profile() {
             <DayRail compact activeDay={student.currentDay} />
           </div>
         </Card>
+
+        <div className="mt-5 animate-rise" style={{ animationDelay: "100ms" }}>
+          <CertificateCard student={student} />
+        </div>
 
         <div className="mt-5 grid grid-cols-3 gap-2.5 animate-rise" style={{ animationDelay: "120ms" }}>
           <div className="rounded-xl border border-border bg-surface p-3 text-center">
