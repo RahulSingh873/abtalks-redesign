@@ -4,6 +4,9 @@ A mobile-first prototype (390px primary target) for ABTalks, a 60-day public-bui
 challenge for Indian college students. Built with React + Vite + Tailwind CSS v4,
 fully interactive, no backend or auth — all data is local/mocked.
 
+## Read Chat Transcripts From here
+https://claude.ai/share/4e9adee0-b551-486f-a9be-d0946f2a750c
+
 ## 1. Implemented routes
 
 | Route | Purpose |
