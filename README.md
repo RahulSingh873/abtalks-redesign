@@ -1,3 +1,7 @@
+<img width="1872" height="560" alt="Screenshot 2026-08-11 173031" src="https://github.com/user-attachments/assets/18ae0a2f-faa1-463a-acde-b3a9c982967f" />
+
+--- 
+
 # ABTalks — 60-Day Challenge Redesign
 
 A mobile-first prototype (390px primary target) for ABTalks, a 60-day public-build
