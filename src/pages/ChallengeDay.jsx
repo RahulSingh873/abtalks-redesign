@@ -94,6 +94,7 @@ export default function ChallengeDay() {
 
   const bothVerified = githubVerified && linkedinVerified;
   const bothDone = submitted;
+
   async function submitGithub() {
     const trimmed = githubUrl.trim();
     if (!GITHUB_RE.test(trimmed)) {
@@ -105,7 +106,8 @@ export default function ChallengeDay() {
     try {
       const [, , owner, repo] = trimmed.match(
         /^https?:\/\/(www\.)?github\.com\/([\w.-]+)\/([\w.-]+)/i
-      ) || [];      const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
+      ) || [];
+      const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
       if (res.ok) {
         setGithubVerified(true);
       } else if (res.status === 404) {
@@ -269,6 +271,7 @@ export default function ChallengeDay() {
 
             <div className="mt-6 animate-rise" style={{ animationDelay: "200ms" }}>
               <p className="font-mono text-xs font-semibold uppercase tracking-widest text-muted-2">Submit your proof</p>
+              <div className="mt-3 space-y-3">
                 <ProofField
                   icon={GithubIcon}
                   label="GitHub proof"
