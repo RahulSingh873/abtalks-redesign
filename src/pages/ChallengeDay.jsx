@@ -89,10 +89,11 @@ export default function ChallengeDay() {
   const [reflection, setReflection] = useState("");
   const [reflectionSaved, setReflectionSaved] = useState(false);
   const [captionCopied, setCaptionCopied] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const pastReflection = getMostRecentReflection(day.day);
 
-  const bothDone = githubVerified && linkedinVerified;
-
+  const bothVerified = githubVerified && linkedinVerified;
+  const bothDone = submitted;
   async function submitGithub() {
     const trimmed = githubUrl.trim();
     if (!GITHUB_RE.test(trimmed)) {
@@ -102,10 +103,9 @@ export default function ChallengeDay() {
     setGithubError("");
     setGithubChecking(true);
     try {
-      const [, , , owner, repo] = trimmed.match(
+      const [, , owner, repo] = trimmed.match(
         /^https?:\/\/(www\.)?github\.com\/([\w.-]+)\/([\w.-]+)/i
-      ) || [];
-      const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
+      ) || [];      const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
       if (res.ok) {
         setGithubVerified(true);
       } else if (res.status === 404) {
@@ -294,6 +294,17 @@ export default function ChallengeDay() {
                   actionLabel="Add LinkedIn post"
                   tone="indigo"
                 />
+              </div>
+
+              {bothVerified && (
+                <Button
+                  size="lg"
+                  className="mt-4 w-full animate-rise"
+                  onClick={() => setSubmitted(true)}
+                >
+                  Submit Day {day.day} <ArrowRightIcon />
+                </Button>
+              )}
             </div>
           </>
         ) : (
